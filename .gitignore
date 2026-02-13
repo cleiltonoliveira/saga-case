@@ -1,0 +1,62 @@
+# Maven / Java
+target/
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Spring Boot
+spring-boot-*.jar
+
+# Logs / runtime files
+*.log
+*.log.*
+nohup.out
+*.pid
+app.log
+*.tmp
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Docker
+/docker-compose.override.yml
+
+# Environment
+.env
+
+# Misc
+coverage/
+coverage-reports/
+
+# Ignore generated Eclipse files
+.apt_generated/
+.classpath
+.metadata/
+bin/
+tmp/
+
+# Ignore IntelliJ gradle/maven config
+out/
+
+# Keep user-specific files out
+*.env.local
+
+# Do not ignore the common module jar if you want to publish it to repo; currently ignore packaged jars in targets
+**/target/*.jar
+

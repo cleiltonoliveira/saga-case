@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sagadb
+    username: saga
+    password: saga
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: localhost:9092
+server:
+  port: 8085
+logging:
+  level:
+    org.springframework: INFO
+

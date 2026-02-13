@@ -1,0 +1,11 @@
+# Module build
+target/
+*.log
+*.pid
+spring.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
