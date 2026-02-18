@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <style>
+    .box { fill:#ffffff; stroke:#2b6cb0; stroke-width:2px; rx:8; }
+    .service { fill:#e6f2ff; stroke:#2b6cb0; stroke-width:2px; rx:8; }
+    .label { font-family: Arial, Helvetica, sans-serif; font-size:14px; fill:#1a202c; }
+    .title { font-family: Arial, Helvetica, sans-serif; font-size:18px; font-weight:700; fill:#2b6cb0; }
+    .small { font-size:12px; fill:#4a5568; }
+    .arrow { stroke:#4a5568; stroke-width:2px; fill:none; marker-end: url(#arrowhead); }
+    .note { font-size:12px; fill:#2d3748; }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="20" y="28" class="title">Arquitetura — Saga (orquestração) + Outbox / Inbox</text>
+
+  <!-- Left column: Order Service -->
+  <g transform="translate(40,70)">
+    <rect class="service" x="0" y="0" width="260" height="120" />
+    <text x="16" y="28" class="label">Order Service</text>
+    <text x="16" y="52" class="small">- REST API: POST /orders</text>
+    <text x="16" y="70" class="small">- Grava `orders` e `outbox`</text>
+    <text x="16" y="88" class="small">(mesma transação)</text>
+  </g>
+
+  <!-- Center: Orchestrator -->
+  <g transform="translate(340,40)">
+    <rect class="service" x="0" y="0" width="320" height="160" />
+    <text x="18" y="28" class="label">Saga Orchestrator</text>
+    <text x="18" y="52" class="small">- Poll `outbox` (published=false)</text>
+    <text x="18" y="70" class="small">- Publica eventos no Kafka</text>
+    <text x="18" y="88" class="small">- Marca `published=true`</text>
+  </g>
+
+  <!-- Right column: Consumers -->
+  <g transform="translate(700,50)">
+    <rect class="service" x="0" y="0" width="220" height="110" />
+    <text x="14" y="28" class="label">Payment Service</text>
+    <text x="14" y="52" class="small">- Consome OrderCreated</text>
+    <text x="14" y="70" class="small">- Dedup via `inbox`</text>
+    <text x="14" y="88" class="small">- Grava `payments`</text>
+
+    <rect class="service" x="0" y="140" width="220" height="80" />
+    <text x="14" y="170" class="label">Inventory Service</text>
+    <text x="14" y="190" class="small">- Consome OrderCreated</text>
+    <text x="14" y="206" class="small">- Reserva inventário (PoC: log)</text>
+  </g>
+
+  <!-- Postgres DB (common) -->
+  <g transform="translate(40,220)">
+    <rect class="box" x="0" y="0" width="300" height="140" />
+    <text x="14" y="24" class="label">Postgres (shared)</text>
+    <text x="14" y="48" class="small">Tables:</text>
+    <text x="24" y="68" class="small">- orders</text>
+    <text x="24" y="86" class="small">- outbox</text>
+    <text x="24" y="104" class="small">- inbox</text>
+    <text x="24" y="122" class="small">- payments</text>
+  </g>
+
+  <!-- Kafka -->
+  <g transform="translate(420,260)">
+    <rect class="box" x="0" y="0" width="300" height="80" />
+    <text x="12" y="28" class="label">Kafka (Broker)</text>
+    <text x="12" y="48" class="small">Tópicos: OrderCreated, PaymentProcessed, InventoryReserved</text>
+  </g>
+
+  <!-- Arrows: Order -> DB Outbox -->
+  <path class="arrow" d="M 300 130 L 340 130" />
+  <text x="300" y="120" class="note">grava</text>
+
+  <!-- Arrow: Outbox (DB) -> Orchestrator poll (two-way conceptual) -->
+  <path class="arrow" d="M 220 260 L 360 160" />
+  <text x="250" y="220" class="note">poll outbox</text>
+
+  <!-- Arrow: Orchestrator -> Kafka -->
+  <path class="arrow" d="M 660 120 L 420 300" />
+  <text x="490" y="170" class="note">publica eventos</text>
+
+  <!-- Arrow: Kafka -> Payment & Inventory -->
+  <path class="arrow" d="M 600 300 L 740 140" />
+  <path class="arrow" d="M 600 300 L 740 230" />
+  <text x="660" y="260" class="note">consume OrderCreated</text>
+
+  <!-- Arrow: Payment -> DB (inbox + payments) -->
+  <path class="arrow" d="M 840 140 L 340 260" />
+  <text x="660" y="190" class="note">grava inbox + payments</text>
+
+  <!-- Legend / notes -->
+  <g transform="translate(40,390)">
+    <rect x="0" y="0" width="1120" height="260" fill="#fff8e6" stroke="#e6b800" rx="8" />
+    <text x="14" y="24" class="label">Legendas / Observações</text>
+    <text x="14" y="48" class="small">1) Outbox: escrita na mesma transação do aggregate (orders) para garantir atomicidade local.</text>
+    <text x="14" y="68" class="small">2) Orchestrator: publica eventos do Outbox para Kafka e marca published=true.</text>
+    <text x="14" y="88" class="small">3) Inbox: deduplicação no consumidor (grava messageId antes de processar).</text>
+    <text x="14" y="108" class="small">4) Kafka: entrega at‑least‑once; consumidores devem ser idempotentes (inbox).</text>
+    <text x="14" y="132" class="small">5) Esta PoC usa um orchestrator para mostrar o padrão; em produção considerar CDC/relayer.</text>
+  </g>
+
+</svg>
+
