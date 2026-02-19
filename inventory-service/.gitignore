@@ -1,6 +1,0 @@
-target/
-*.log
-*.pid
-.vscode/
-.idea/
-

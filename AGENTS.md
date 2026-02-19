@@ -191,6 +191,8 @@ Comandos úteis (exemplos):
 -------------------------
 - Mantenedores do repositório: (adicionar nomes/handles conforme necessário) — se não houver, manter `TODO: adicionar mantenedores`.
 
+19) Use sudo docker compose ao invés de docker-compose
+20) Use lombok
 
 ---
 

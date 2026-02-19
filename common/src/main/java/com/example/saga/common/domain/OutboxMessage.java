@@ -1,10 +1,15 @@
 package com.example.saga.common.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "outbox")
+@Getter
+@Setter
 public class OutboxMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,20 +21,4 @@ public class OutboxMessage {
     private String payload;
     private boolean published = false;
     private Instant createdAt = Instant.now();
-
-    // getters/setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getAggregateType() { return aggregateType; }
-    public void setAggregateType(String aggregateType) { this.aggregateType = aggregateType; }
-    public String getAggregateId() { return aggregateId; }
-    public void setAggregateId(String aggregateId) { this.aggregateId = aggregateId; }
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-    public String getPayload() { return payload; }
-    public void setPayload(String payload) { this.payload = payload; }
-    public boolean isPublished() { return published; }
-    public void setPublished(boolean published) { this.published = published; }
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }

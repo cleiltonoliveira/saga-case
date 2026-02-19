@@ -42,17 +42,18 @@ public class KafkaConfig {
 
     @Bean
     public NewTopic orderCreatedTopic() {
-        return new NewTopic("OrderCreated", 1, (short) 1);
+        return new NewTopic("order_created", 1, (short) 1);
     }
 
     @Bean
-    public NewTopic paymentProcessedTopic() {
-        return new NewTopic("PaymentProcessed", 1, (short) 1);
+    public NewTopic paymentRequestedTopic() {
+        return new NewTopic("payment_requested", 1, (short) 1);
     }
 
     @Bean
-    public NewTopic inventoryReservedTopic() {
-        return new NewTopic("InventoryReserved", 1, (short) 1);
+    public NewTopic paymentCompletedProcessedTopic() {
+        return new NewTopic("payment_completed", 1, (short) 1);
     }
+
 }
 

@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableScheduling
-@EntityScan(basePackages = {"com.example.orchestrator", "com.example.saga.common.domain"})
-@EnableJpaRepositories(basePackages = {"com.example.saga.common.repo"})
+@EntityScan(basePackages = {"com.example.orchestrator.saga", "com.example.saga.common.domain"})
+@EnableJpaRepositories(basePackages = {"com.example.orchestrator.saga", "com.example.saga.common.repo"})
 public class OrchestratorApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrchestratorApplication.class, args);
